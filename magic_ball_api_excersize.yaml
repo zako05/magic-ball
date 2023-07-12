@@ -1,0 +1,222 @@
+openapi: 3.0.3
+info:
+  title: Magic 8 Ball API
+  description: |
+    Excersize - Implement a Magic 8 Ball API
+
+    1. Implement API where user can ask the ball a question and receive random predictions
+    2. Implement a paginated CRUD API for modifying Magic 8 Ball data
+
+    - start with initial answers from https://en.wikipedia.org/wiki/Magic_8_Ball
+    - write unit tests
+    - store source code on Github
+    - Bonus: make data persistent (FS or a DB of your choice)
+  version: 1.0.0
+paths:
+  /ball/prediction:
+    post:
+      tags:
+        - Configure
+      description: Create a new prediction definition
+      operationId: createPredictionDef
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictionDef'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionDef'
+        '404':
+          description: Not Found
+        '400':
+          description: Bad Request
+    get:
+      tags:
+        - Configure
+      description: List prediction definitions
+      operationId: getPredicitonDefs
+      parameters:
+        - in: query
+          name: pageIndex
+          schema:
+            type: integer
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PredictionDef'
+                  page:
+                    $ref: '#/components/schemas/PageResult'
+        '400':
+          description: Bad Request
+  /ball/prediction/{id}:
+    get:
+      tags:
+        - Configure
+      description: Get a prediction definition by ID
+      operationId: getPredictionDef
+      parameters:
+        - $ref: '#/components/parameters/PredictionDefId'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionDef'
+        '404':
+          description: Not found
+        '400':
+          description: Bad Request
+    put:
+      tags:
+        - Configure
+      description: Update the prediction definition
+      operationId: updatePredictionDef
+      parameters:
+        - $ref: '#/components/parameters/PredictionDefId'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionDef'
+        '404':
+          description: Not Found
+        '400':
+          description: Bad Request
+    delete:
+      tags:
+        - Configure
+      description: Delete prediciton definition
+      operationId: deletePredicitonDef
+      parameters:
+        - $ref: '#/components/parameters/PredictionDefId'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictionDef'
+        '404':
+          description: Not Found
+        '400':
+          description: Bad Request
+  /ball/ask:
+    post:
+      tags:
+        - Ask
+      description: Ask Magic 8 ball a question
+      operationId: askQuestion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Prediction'
+        '400':
+          description: Bad Request
+  /ball/history:
+    get:
+      tags:
+        - Ask
+      description: List predictions
+      operationId: getPredictions
+      parameters:
+        - in: query
+          name: pageIndex
+          schema:
+            type: integer
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Prediction'
+                  page:
+                    $ref: '#/components/schemas/PageResult'
+        '400':
+          description: Bad Request
+components:
+  schemas:
+    PredictionDef:
+      type: object
+      properties:
+        id:
+          type: integer
+        text:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    Prediction:
+      type: object
+      properties:
+        id:
+          type: integer
+        question:
+          type: string
+        prediction:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+    PageResult:
+      type: object
+      properties:
+        index:
+          type: integer
+        size:
+          type: integer
+        total:
+          type: integer
+  parameters:
+    PredictionDefId:
+      name: id
+      in: path
+      description: ID of the prediction def
+      required: true
+      schema:
+        type: string
+tags:
+  - name: Ask
+    description: Asks a question and receive a prediction
+  - name: Configure
+    description: Configure possible Ball's predictions

@@ -4,7 +4,18 @@
 
 ```bash
 npm install
-nodemon app.js
+```
+
+Run server.
+
+```bash
+npm run server
+```
+
+Run API tests. No need to run server.
+
+```bash
+npm run test
 ```
 
 ## Request examples

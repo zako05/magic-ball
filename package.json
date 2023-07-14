@@ -1,11 +1,11 @@
 {
-  "name": "Magic Ball",
+  "name": "magic-ball",
   "version": "1.0.0",
   "description": "API where user can ask the ball a question and receive random predictions",
-  "main": "index.js",
-  "type": "module",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon src/server.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -16,5 +16,9 @@
     "express-session": "^1.17.3",
     "nodemon": "^3.0.1",
     "pug": "^3.0.2"
+  },
+  "devDependencies": {
+    "jest": "^29.6.1",
+    "supertest": "^6.3.3"
   }
 }

@@ -1,19 +1,13 @@
-import path from 'path'
-import { fileURLToPath } from 'url'
-import express from 'express'
-import bodyParser from 'body-parser'
+const path = require('path')
+const express = require('express')
+const bodyParser = require('body-parser')
 
 const app = express()
-
-//  __dirname is not defined in ES module scope
-//  https://flaviocopes.com/fix-dirname-not-defined-es-module-scope/
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 const predictions = [
   {"id": 1, "text": "It is certain."},
   {"id": 2, "text": "It is decidedly so."},
-  {"id": 3, "text": "Without a doubt."},
+  {"id": 3, "text": "Certainly."},
   {"id": 4, "text": "Yes definitely."},
   {"id": 5, "text": "You may rely on it."},
   {"id": 6, "text": "As I see it, yes."},
@@ -37,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.json())
 
 app.set('view engine', 'pug')
-app.set('views', path.join(__dirname, 'views'))
+app.set('./views', path.join(__dirname, 'views'))
 
 app.get("/ball", (req, res) => {
   res.render('index')
@@ -60,7 +54,7 @@ app.post('/ball/prediction', (req, res) => {
     badRequest(res)
   } else {
     predictions.push(prediction)
-    res.status(200).send('Successfull')
+    return res.status(200).send('Successfull')
   }
 })
 
@@ -107,7 +101,7 @@ app.post('/ball/ask', (req, res) => {
   const answerId = Math.floor(Math.random() * predictions.length)
   const answer = predictions.find(answer => answer.id == Number(answerId)).text
 
-  res.render('prediction', {
+  res.status(200).render('prediction', {
     question,
     answer,
   })
@@ -121,4 +115,4 @@ function notFound(res) {
   return res.status(404).send('Not found')
 }
 
-app.listen(3000, () => console.log("Server ready"))
+module.exports = app

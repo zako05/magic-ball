@@ -1,16 +1,44 @@
-# Exercise - Implement a Magic 8 Ball API
+# Magic 8 Ball API
 
-1. Implement API where user can ask the ball a question and receive random predictions
-2. Implement a paginated CRUD API for modifying Magic 8 Ball data
+## Install & Run
 
-# Steps
+```bash
+npm install
+nodemon app.js
+```
 
-* create a *.json file with 20 possibly answers (10 affirmative, 5 non-committal, 5 negative)
-* get `/ball/prediction` - get the predictions list (json, array, list of all predictions)
-  * post `/ball/prediction` - create a new prediction
-  * get response - pagination 
-* get `/ball/prediction/{id}` - get a prediction based on id
-  * put `/ball/prediction/{id}` - update an existing prediction
-  * delete `/ball/predtion/{id}` - delete an existing prediction
-* post `/ball/ask` - ask a question, response with random prediction/answer among 20 possibilities
-* get `/ball/history` - history of all already asked questions
+## Request examples
+
+GET `/ball/prediction`
+
+```bash
+curl -X GET http://localhost:3000/ball/prediction
+```
+
+POST `/ball/prediction`
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"id":21,"text":"Test"}' http://localhost:3000/ball/prediction
+```
+
+GET `/ball/prediction/:id`
+
+```bash
+```
+PUT `/ball/prediction/:id`
+
+```bash
+curl -X PUT -H "Content-Type: application/json" -d '{"id": 1, "text": "testtest"}' http://localhost:3000/ball/prediction/2
+```
+
+DELETE `/ball/prediction/:id`
+
+```bash
+curl -X DELETE 'http://localhost:3000/ball/prediction/2'
+```
+
+POST `/ball/ask`
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"question":"Do I win a car?"}' http://localhost:3000/ball/ask
+```

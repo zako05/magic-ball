@@ -1,1 +1,8 @@
-tags
+# misc
+.DS_Store
+.*.sw*
+tags*
+
+# node modules
+node_modules/
+package-lock.json

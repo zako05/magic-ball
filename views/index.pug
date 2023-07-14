@@ -1,0 +1,15 @@
+html
+  head
+    title
+      | Magic 8 Ball
+    body
+      h1
+        | Magic 8 Ball
+      
+      form(action='/ball/ask' method='POST')
+        div
+          label(for='question')
+            | Question: 
+          input(type='text' name='question', id='question' required)
+        button(type='submit')
+          | Ask
